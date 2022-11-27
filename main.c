@@ -4,7 +4,9 @@ int main(void)
 {
     pid_t child_pid, hold_up;
 	int stat1;
+	char *argv[] = {"ls", "-l", "-h", "-a", NULL};
 
+	execvp(argv[0], argv);
 	child_pid = fork();
     if (child_pid == 0)
 	{
