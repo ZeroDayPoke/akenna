@@ -14,6 +14,12 @@
 /*
  * prototypes - function protos below
  */
+
+/* defined in tokenizer.c */
 char *dupstr(char *fire);
+int tok_num(char *str, char *delims);
+char **tokstr(char *line, char *delims);
+int substrLen(char *str, char *delims);
+ssize_t readlineSI(char **line, size_t *n, FILE *inbound);
 
 #endif
