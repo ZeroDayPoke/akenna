@@ -2,18 +2,10 @@
 
 char **get_input(char *input)
 {
-    char **command = malloc(8 * sizeof(char *));
-    char *separator = " ", *parsed;
-    int index = 0;
+    char **command = malloc(sizeof(char *));
+    char *separator = " ";
 
-    parsed = strtok(input, separator);
-    while (parsed != NULL)
-    {
-        command[index] = parsed;
-        index++;
-        parsed = strtok(NULL, separator);
-    }
-    command[index] = NULL;
+    command = tokstr(input, separator);
     return (command);
 }
 
@@ -37,6 +29,7 @@ int main(int argc, char *argv[])
         if (child_pid == 0)
         {
             /* Never returns if the call is successful */
+            printf("%s", command[0]);
             execvp(command[0], command);
             printf("This won't be printed if execvp is successul\n");
         }

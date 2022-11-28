@@ -97,7 +97,6 @@ char **tokstr(char *line, char *delims)
 			j++;
 		}
 		tokenStorage[i][k] = '\0';
-		printf("Token %d : %s\n", i, tokenStorage[i]);
 	}
 	return (tokenStorage);
 }
