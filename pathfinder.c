@@ -55,26 +55,26 @@ void print_paths(char **pathArr)
  * check_paths - checks pathArr against command[0]
  * @pathArr: array of paths
  * @command: first tok of command array
- * Return: num of valid path located or -1 if no such
+ * Return: num of valid path located or NULL if none
  */
-int check_paths(char **pathArr, char *command)
+char *check_paths(char **pathArr, char *command)
 {
-	unsigned int i = 0, ret = -1;
+	unsigned int i = 0, pathLen = 0;
 	struct stat s;
-	char *cmpPath;
+	char *cmpPath = NULL;
 
-	cmpPath = malloc(sizeof(char) * 101);
 	for (; pathArr[i]; i++)
 	{
+		pathLen = (_strlen(pathArr[i]) + _strlen(command) + 2);
+		cmpPath = malloc(sizeof(char) * pathLen);
 		_strcpy(cmpPath, pathArr[i]);
 		_strcat(cmpPath, "/");
 		_strcat(cmpPath, command);
 		if (stat(cmpPath, &s) == 0)
 		{
-			ret = i;
-			break;
+			return (cmpPath);
 		}
+		free(cmpPath);
 	}
-	free(cmpPath);
-	return (ret);
+	return (NULL);
 }

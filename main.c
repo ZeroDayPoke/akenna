@@ -10,10 +10,10 @@
 int main(int argc, char *argv[], char *envp[])
 {
     pid_t child_pid;
-	int stat1, eRet = 0, i = 0, pathNo = 0;
+	int stat1, eRet = 0, i = 0;
 	char *line = NULL, **command = NULL, *moneySign;
 	size_t n = 0;
-    char *thePath, **pathArr;
+    char *thePath = NULL, **pathArr;
 
     moneySign = "$ ";
     pathArr = path_locate(envp);
@@ -21,7 +21,6 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* placeholder */
     }
-    thePath = malloc(sizeof(char) * 101);
 	while (1)
     {
         write(STDOUT_FILENO, moneySign, 2);
@@ -31,7 +30,12 @@ int main(int argc, char *argv[], char *envp[])
             break;
         }
         command = get_input(line);
-        pathNo = check_paths(pathArr, command[0]);
+        thePath = check_paths(pathArr, command[0]);
+        if (!(thePath))
+        {
+            printf("./hsh: %s not found\n", command[0]);
+            continue;
+        }
         if (_strcmp("exit", command[0]) == 0)
         {
             break;
@@ -43,14 +47,6 @@ int main(int argc, char *argv[], char *envp[])
                 printf("%s\n", envp[i]);
             }
         }
-        if (pathNo == -1)
-        {
-            printf("./hsh: %s not found\n", command[0]);
-            continue;
-        }
-        _strcpy(thePath, pathArr[pathNo]);
-        _strcat(thePath, "/");
-        _strcat(thePath, command[0]);
         child_pid = fork();
         if (child_pid == 0)
         {
@@ -61,13 +57,13 @@ int main(int argc, char *argv[], char *envp[])
             waitpid(child_pid, &stat1, WUNTRACED);
         }
 	}
-    write(STDOUT_FILENO, "\n", 1);
-    free(thePath);
-    free_path(pathArr);
     if (command != NULL)
     {
         free_tokens(command);
         free(command);
     }
+    write(STDOUT_FILENO, "\n", 1);
+    free(thePath);
+    free_path(pathArr);
     return (0);
 }
