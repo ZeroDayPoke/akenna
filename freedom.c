@@ -14,3 +14,20 @@ void free_tokens(char **tokens)
 		free(tokens[i]);
 	}
 }
+
+/**
+ * free_path - frees mem assoc w indv strs in strarr
+ * @tokens: array of path toks
+ * Return: void
+ */
+void free_path(char **paths)
+{
+	unsigned int i = 0;
+
+	paths[0] -= 5;
+	for (; paths[i] != NULL; i++)
+	{
+		free(paths[i]);
+	}
+	free(paths);
+}

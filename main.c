@@ -63,6 +63,7 @@ int main(int argc, char *argv[], char *envp[])
 	}
     write(STDOUT_FILENO, "\n", 1);
     free(thePath);
+    free_path(pathArr);
     if (command != NULL)
     {
         free_tokens(command);

@@ -28,6 +28,7 @@ char **tokstr(char *line, char *delims);
 int substrLen(char *str, char *delims);
 /* defined in freedom.c */
 void free_tokens(char **tokens);
+void free_path(char **paths);
 /* defined in help_fun.c */
 char **get_input(char *input);
 /* defined in moar_strstuff.c */
