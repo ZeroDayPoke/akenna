@@ -9,36 +9,31 @@ char **get_input(char *input)
     return (command);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp[])
 {
     pid_t child_pid;
 	int stat1;
 	char *line = NULL, **command;
-	FILE *inbound = NULL;
 	size_t n = 0;
+    const char *shell = "/usr/bin/ls";
 
-    if (argc != 2)
+    if (argc || argv[0])
     {
-        exit(EXIT_FAILURE);
+        /* placeholder */
     }
-    inbound = fopen(argv[1], "r");
-	while (getline(&line, &n, inbound) != -1)
+	while (getline(&line, &n, stdin) != -1)
     {
         command = get_input(line);
         child_pid = fork();
         if (child_pid == 0)
         {
-            /* Never returns if the call is successful */
-            printf("%s", command[0]);
-            execvp(command[0], command);
-            printf("This won't be printed if execvp is successul\n");
+            execve(shell, command, envp);
         }
         else
         {
             waitpid(child_pid, &stat1, WUNTRACED);
         }
 	}
-    fclose(inbound);
 	free(line);
 	free(command);
     return (0);

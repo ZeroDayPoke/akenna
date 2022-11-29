@@ -84,7 +84,7 @@ char **tokstr(char *line, char *delims)
 	int i, j, k, tokTotal, ssLen;
 
 	tokTotal = tok_num(line, delims);
-	tokenStorage = malloc(sizeof(char *) * tokTotal);
+	tokenStorage = malloc(sizeof(char *) * (tokTotal + 1));
 	for (i = 0; i < tokTotal; i++)
 	{
 		while (line[j] == *delims)
@@ -98,6 +98,7 @@ char **tokstr(char *line, char *delims)
 		}
 		tokenStorage[i][k] = '\0';
 	}
+	tokenStorage[i] = NULL;
 	return (tokenStorage);
 }
 
