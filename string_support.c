@@ -115,3 +115,19 @@ int _strcmp(char *s1, char *s2)
 	}
 	return (dif);
 }
+
+/**
+ * _strlen - function to find length of string
+ * @s: string input
+ * Return: string length
+ */
+int _strlen(char *s)
+{
+	int a = 0;
+
+	while (*(s + a) != '\0')
+	{
+		a++;
+	}
+	return (a);
+}
