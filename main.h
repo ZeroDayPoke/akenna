@@ -20,6 +20,7 @@
 char *_strcat(char *dest, char *src);
 char *dupstr(char *fire);
 char *_strcpy(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
 /* defined in tokenizer.c */
 int tok_num(char *str, char *delims);
 char **tokstr(char *line, char *delims);

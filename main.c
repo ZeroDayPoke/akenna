@@ -33,6 +33,10 @@ int main(int argc, char *argv[], char *envp[])
             break;
         }
         command = get_input(line);
+        if (_strcmp("exit", command[0]) == 0)
+        {
+            break;
+        }
         _strcpy(thePath, theWay);
         _strcat(thePath, command[0]);
         if (stat(thePath, &s) != 0)
