@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 /*
  * prototypes - function protos below
