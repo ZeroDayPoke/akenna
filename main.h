@@ -32,5 +32,9 @@ void free_tokens(char **tokens);
 char **get_input(char *input);
 /* defined in moar_strstuff.c */
 int _strncmp(char *s1, char *s2, int n);
+/* defined in pathfinder.c */
+char **path_locate(char *envvars[]);
+char **path_tok(char *path);
+void print_paths(char **pathArr);
 
 #endif

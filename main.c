@@ -14,9 +14,11 @@ int main(int argc, char *argv[], char *envp[])
 	char *line = NULL, **command = NULL, *moneySign;
 	size_t n = 0;
     struct stat s;
-    char *theWay = "/usr/bin/", *thePath;
+    char *theWay = "/usr/bin/", *thePath, **pathArr;
 
     moneySign = "$ ";
+    pathArr = path_locate(envp);
+    print_paths(pathArr);
     if (argc || argv[0] || thePath)
     {
         /* placeholder */
