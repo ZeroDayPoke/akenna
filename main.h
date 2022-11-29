@@ -30,5 +30,7 @@ int substrLen(char *str, char *delims);
 void free_tokens(char **tokens);
 /* defined in help_fun.c */
 char **get_input(char *input);
+/* defined in moar_strstuff.c */
+int _strncmp(char *s1, char *s2, int n);
 
 #endif
