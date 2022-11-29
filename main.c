@@ -15,19 +15,23 @@ int main(int argc, char *argv[], char *envp[])
 	int stat1;
 	char *line = NULL, **command;
 	size_t n = 0;
-    const char *shell = "/usr/bin/ls";
+    char *theWay = "/usr/bin/", *thisIs, *thePath;
 
-    if (argc || argv[0])
+    if (argc || argv[0] || thePath)
     {
         /* placeholder */
     }
+    thePath = malloc(sizeof(char) * 101);
 	while (getline(&line, &n, stdin) != -1)
     {
         command = get_input(line);
+        thisIs = command[0];
+        _strcpy(thePath, theWay);
+        _strcat(thePath, thisIs);
         child_pid = fork();
         if (child_pid == 0)
         {
-            execve(shell, command, envp);
+            execve(thePath, command, envp);
         }
         else
         {
