@@ -75,5 +75,6 @@ int check_paths(char **pathArr, char *command)
 			break;
 		}
 	}
+	free(cmpPath);
 	return (ret);
 }

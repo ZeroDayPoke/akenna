@@ -8,13 +8,10 @@
  */
 int tok_num(char *str, char *delims)
 {
-	int tokTotal = 0, i, tokLen = 0;
+	int tokTotal = 0, i, lineLen = 0;
 
-	for (i = 0; str[i]; i++)
-	{
-		tokLen++;
-	}
-	for (i = 0; i < tokLen; i++)
+	lineLen = _strlen(str);
+	for (i = 0; i < lineLen; i++)
 	{
 		if (str[i] != *delims)
 		{
