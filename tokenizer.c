@@ -57,39 +57,3 @@ char **tokstr(char *line, char *delims)
 	tokenStorage[i] = NULL;
 	return (tokenStorage);
 }
-
-/*
-ssize_t readlineSI(char **line, size_t *n, FILE *inbound)
-{
-	ssize_t input, ret;
-	char *buffer, c = 'c';
-	int retVal;
-
-	input = 0;
-	buffer = malloc(sizeof(char) * 1028);
-	while (c != '\n')
-	{
-		retVal = read(STDIN_FILENO, &c, 1);
-		if (retVal < 0)
-		{
-			free(buffer);
-			exit(EXIT_FAILURE);
-		}
-		if (retVal == 0 && input != 0)
-		{
-			input++;
-			break;
-		}
-		if (input >= 1028)
-		{
-			printf("BUFFER SIZE 1028 EXCEEDED");
-			exit(EXIT_FAILURE);
-		}
-		buffer[input] = c;
-		input++;
-	}
-	buffer[input] = '\0';
-	ret = input;
-	return (ret);
-}
-*/

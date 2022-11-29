@@ -25,7 +25,7 @@ int _strcmp(char *s1, char *s2);
 int tok_num(char *str, char *delims);
 char **tokstr(char *line, char *delims);
 int substrLen(char *str, char *delims);
-ssize_t readlineSI(char **line, size_t *n, FILE *inbound);
+/* defined in freedom.c */
 void free_tokens(char **tokens);
 
 #endif

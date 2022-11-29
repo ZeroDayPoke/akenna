@@ -12,7 +12,7 @@ char **get_input(char *input)
 int main(int argc, char *argv[], char *envp[])
 {
     pid_t child_pid;
-	int stat1, eRet = 0;
+	int stat1, eRet = 0, i = 0;
 	char *line = NULL, **command = NULL, *moneySign;
 	size_t n = 0;
     struct stat s;
@@ -36,6 +36,13 @@ int main(int argc, char *argv[], char *envp[])
         if (_strcmp("exit", command[0]) == 0)
         {
             break;
+        }
+        if (_strcmp("env", command[0]) == 0)
+        {
+            for (i = 0; envp[i]; i++)
+            {
+                printf("%s\n", envp[i]);
+            }
         }
         _strcpy(thePath, theWay);
         _strcat(thePath, command[0]);
