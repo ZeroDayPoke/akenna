@@ -35,3 +35,24 @@ void print_paths(char **pathArr)
 		printf("path %d is %s\n", i, pathArr[i]);
 	}
 }
+
+int check_paths(char **pathArr, char *command)
+{
+	unsigned int i = 0, ret = -1;
+	struct stat s;
+	char *cmpPath;
+
+	cmpPath = malloc(sizeof(char) * 101);
+	for (; pathArr[i]; i++)
+	{
+		_strcpy(cmpPath, pathArr[i]);
+		_strcat(cmpPath, "/");
+		_strcat(cmpPath, command);
+		if (stat(cmpPath, &s) == 0)
+		{
+			ret = i;
+			break;
+		}
+	}
+	return (ret);
+}

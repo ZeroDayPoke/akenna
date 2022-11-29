@@ -10,15 +10,13 @@
 int main(int argc, char *argv[], char *envp[])
 {
     pid_t child_pid;
-	int stat1, eRet = 0, i = 0;
+	int stat1, eRet = 0, i = 0, pathNo = 0;
 	char *line = NULL, **command = NULL, *moneySign;
 	size_t n = 0;
-    struct stat s;
-    char *theWay = "/usr/bin/", *thePath, **pathArr;
+    char *thePath, **pathArr;
 
     moneySign = "$ ";
     pathArr = path_locate(envp);
-    print_paths(pathArr);
     if (argc || argv[0] || thePath)
     {
         /* placeholder */
@@ -33,6 +31,7 @@ int main(int argc, char *argv[], char *envp[])
             break;
         }
         command = get_input(line);
+        pathNo = check_paths(pathArr, command[0]);
         if (_strcmp("exit", command[0]) == 0)
         {
             break;
@@ -44,13 +43,14 @@ int main(int argc, char *argv[], char *envp[])
                 printf("%s\n", envp[i]);
             }
         }
-        _strcpy(thePath, theWay);
-        _strcat(thePath, command[0]);
-        if (stat(thePath, &s) != 0)
+        if (pathNo == -1)
         {
             printf("./hsh: %s not found\n", command[0]);
             continue;
         }
+        _strcpy(thePath, pathArr[pathNo]);
+        _strcat(thePath, "/");
+        _strcat(thePath, command[0]);
         child_pid = fork();
         if (child_pid == 0)
         {

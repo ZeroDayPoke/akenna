@@ -36,5 +36,6 @@ int _strncmp(char *s1, char *s2, int n);
 char **path_locate(char *envvars[]);
 char **path_tok(char *path);
 void print_paths(char **pathArr);
+int check_paths(char **pathArr, char *command);
 
 #endif
