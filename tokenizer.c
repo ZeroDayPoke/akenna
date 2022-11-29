@@ -1,5 +1,11 @@
 #include "main.h"
 
+/**
+ * tok_num - calcs num of toks in str
+ * @str: string to tokenize
+ * @delims: delims to tokenize based on
+ * Return: num of tokens in overall str
+ */
 int tok_num(char *str, char *delims)
 {
 	int tokTotal = 0, i, tokLen = 0;
@@ -19,6 +25,12 @@ int tok_num(char *str, char *delims)
 	return (tokTotal);
 }
 
+/**
+ * substrLen - computes length of substr / token
+ * @str: string in question
+ * @delims: delims to tok based on
+ * Return: length of substr
+ */
 int substrLen(char *str, char *delims)
 {
 	int i = 0, tokLen = 0;
@@ -31,6 +43,12 @@ int substrLen(char *str, char *delims)
 	return (tokLen);
 }
 
+/**
+ * tokstr - tokenizes str into substrs
+ * @line: str to tokenize
+ * @delim: delim to tokenize based on
+ * Return: token array
+ */
 char **tokstr(char *line, char *delims)
 {
 	char **tokenStorage;

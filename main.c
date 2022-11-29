@@ -1,14 +1,12 @@
 #include "main.h"
 
-char **get_input(char *input)
-{
-    char **command = malloc(sizeof(char *));
-    char *separator = " ";
-
-    command = tokstr(input, separator);
-    return (command);
-}
-
+/**
+ * main - Entry point for ghost
+ * @argc: arg count
+ * @argv: array of input arg strings
+ * @envp: array of inherited environment vars
+ * Return: TBD
+ */
 int main(int argc, char *argv[], char *envp[])
 {
     pid_t child_pid;
