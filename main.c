@@ -15,7 +15,7 @@ int main(int argc, char *argv[], char *envp[])
 	int stat1;
 	char *line = NULL, **command;
 	size_t n = 0;
-    char *theWay = "/usr/bin/", *thisIs, *thePath;
+    char *theWay = "/usr/bin/", *thePath;
 
     if (argc || argv[0] || thePath)
     {
@@ -25,9 +25,8 @@ int main(int argc, char *argv[], char *envp[])
 	while (getline(&line, &n, stdin) != -1)
     {
         command = get_input(line);
-        thisIs = command[0];
         _strcpy(thePath, theWay);
-        _strcat(thePath, thisIs);
+        _strcat(thePath, command[0]);
         child_pid = fork();
         if (child_pid == 0)
         {
@@ -38,7 +37,9 @@ int main(int argc, char *argv[], char *envp[])
             waitpid(child_pid, &stat1, WUNTRACED);
         }
 	}
+    free(theWay);
+    free(thePath);
 	free(line);
-	free(command);
+	free_tokens(command);
     return (0);
 }

@@ -43,7 +43,7 @@ char **tokstr(char *line, char *delims)
 		while (line[j] == *delims)
 			j++;
 		ssLen = substrLen(line + j, delims);
-		tokenStorage[i] = malloc(sizeof(char) * (ssLen + 2));
+		tokenStorage[i] = malloc(sizeof(char) * (ssLen + 1));
 		for (k = 0; k < ssLen; k++)
 		{
 			if (line[j] != '\n')
