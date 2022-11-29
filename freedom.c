@@ -4,10 +4,9 @@ void free_tokens(char **tokens)
 {
 	unsigned int i = 0;
 
-	while (tokens[i] != NULL)
+	for (; tokens[i] != NULL; i++)
 	{
 		free(tokens[i]);
-		i++;
 	}
 	free(tokens);
 }
