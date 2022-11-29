@@ -27,6 +27,11 @@ int main(int argc, char *argv[], char *envp[])
     {
         write(STDOUT_FILENO, moneySign, 2);
         badRet = getline(&line, &n, stdin);
+        if (badRet == -1)
+        {
+            write(STDOUT_FILENO, "\n", 1);
+            break;
+        }
         command = get_input(line);
         _strcpy(thePath, theWay);
         _strcat(thePath, command[0]);
