@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+ * path_locate - yoinks path from env
+ * @envvars: env var array in
+ * Return: array of path strs
+ */
 char **path_locate(char *envvars[])
 {
 	unsigned int i = 0;
@@ -16,6 +21,11 @@ char **path_locate(char *envvars[])
 	return(daWay);
 }
 
+/**
+ * path_tok - supplies path info to tokenizer
+ * @path: PATH from inherited env
+ * Return: tokenized PATH
+ */
 char **path_tok(char *path)
 {
 	char **thePaths = malloc(sizeof(char *));
@@ -26,6 +36,11 @@ char **path_tok(char *path)
 	return(thePaths);
 }
 
+/**
+ * print_paths - shows the tokenized paths
+ * @pathArr: array of path strs
+ * Return: void, for testing
+ */
 void print_paths(char **pathArr)
 {
 	unsigned int i = 0;
@@ -36,6 +51,12 @@ void print_paths(char **pathArr)
 	}
 }
 
+/**
+ * check_paths - checks pathArr against command[0]
+ * @pathArr: array of paths
+ * @command: first tok of command array
+ * Return: num of valid path located or -1 if no such
+ */
 int check_paths(char **pathArr, char *command)
 {
 	unsigned int i = 0, ret = -1;
