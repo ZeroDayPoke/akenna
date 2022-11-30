@@ -33,11 +33,6 @@ int main(int argc, char *argv[], char *envp[])
         }
         command = get_input(line);
         thePath = check_paths(pathArr, command[0]);
-        if (!(thePath))
-        {
-            printf("./hsh: %s not found\n", command[0]);
-            continue;
-        }
         if (_strcmp("exit", command[0]) == 0)
         {
             break;
@@ -48,6 +43,11 @@ int main(int argc, char *argv[], char *envp[])
             {
                 printf("%s\n", envp[i]);
             }
+        }
+        if (!(thePath))
+        {
+            printf("./hsh: %s not found\n", command[0]);
+            continue;
         }
         child_pid = fork();
         if (child_pid == 0)
