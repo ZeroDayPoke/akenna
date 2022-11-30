@@ -30,6 +30,7 @@ int main(int argc, char *argv[], char *envp[])
         if (eRet == -1)
         {
             free_tokens(command);
+            free(command);
             free(thePath);
             break;
         }
@@ -61,10 +62,10 @@ int main(int argc, char *argv[], char *envp[])
             waitpid(child_pid, &stat1, WUNTRACED);
         }
         free_tokens(command);
+        free(command);
         free(thePath);
 	}
     free(line);
-    free(command);
     free_path(pathArr);
     write(STDOUT_FILENO, "\n", 1);
     return (0);
