@@ -28,7 +28,7 @@ char **path_locate(char *envvars[])
  */
 char **path_tok(char *path)
 {
-	char **thePaths = malloc(sizeof(char *));
+	char **thePaths;
     char *separator = ":";
 
     thePaths = tokstr(path, separator);
