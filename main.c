@@ -35,6 +35,7 @@ int main(int argc, char *argv[], char *envp[])
             break;
         }
         command = get_input(line);
+        free(line);
         thePath = check_paths(pathArr, command[0]);
         if (_strcmp("exit", command[0]) == 0)
         {
@@ -65,7 +66,6 @@ int main(int argc, char *argv[], char *envp[])
         free(command);
         free(thePath);
 	}
-    free(line);
     free_path(pathArr);
     write(STDOUT_FILENO, "\n", 1);
     return (0);
