@@ -7,7 +7,7 @@
  */
 char **get_input(char *input)
 {
-    char **command = malloc(sizeof(char *));
+    char **command;
     char *separator = " ";
 
     command = tokstr(input, separator);
