@@ -43,13 +43,13 @@ int substrLen(char *str, char *delims)
 /**
  * tokstr - tokenizes str into substrs
  * @line: str to tokenize
- * @delim: delim to tokenize based on
+ * @delims: delim to tokenize based on
  * Return: token array
  */
 char **tokstr(char *line, char *delims)
 {
 	char **tokenStorage;
-	int i, j = 0, k, tokTotal, ssLen;
+	int i, j = 0, k, tokTotal, ssLen = 0;
 
 	tokTotal = tok_num(line, delims);
 	tokenStorage = malloc(sizeof(char *) * (tokTotal + 1));
@@ -59,14 +59,8 @@ char **tokstr(char *line, char *delims)
 			j++;
 		ssLen = substrLen(line + j, delims);
 		tokenStorage[i] = malloc(sizeof(char) * (ssLen + 1));
-		for (k = 0; k < ssLen; k++)
-		{
-			if (line[j] != '\n')
-			{
-				tokenStorage[i][k] = line[j];
-				j++;
-			}
-		}
+		for (k = 0; k < ssLen; k++, j++)
+			tokenStorage[i][k] = line[j];
 		tokenStorage[i][k] = '\0';
 	}
 	tokenStorage[i] = NULL;

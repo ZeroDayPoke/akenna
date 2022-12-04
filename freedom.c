@@ -13,11 +13,12 @@ void free_tokens(char **tokens)
 	{
 		free(tokens[i]);
 	}
+	free (tokens);
 }
 
 /**
  * free_path - frees mem assoc w indv strs in strarr
- * @tokens: array of path toks
+ * @paths: array of path toks
  * Return: void
  */
 void free_path(char **paths)

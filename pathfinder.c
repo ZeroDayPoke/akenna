@@ -18,7 +18,7 @@ char **path_locate(char *envvars[])
 			return (daWay);
 		}
 	}
-	return(daWay);
+	return (daWay);
 }
 
 /**
@@ -29,11 +29,11 @@ char **path_locate(char *envvars[])
 char **path_tok(char *path)
 {
 	char **thePaths;
-    char *separator = ":";
+	char *separator = ":";
 
-    thePaths = tokstr(path, separator);
+	thePaths = tokstr(path, separator);
 	thePaths[0] += 5;
-	return(thePaths);
+	return (thePaths);
 }
 
 /**
@@ -47,7 +47,7 @@ void print_paths(char **pathArr)
 
 	for (; pathArr[i]; i++)
 	{
-		printf("path %d is %s\n", i, pathArr[i]);
+		/* placeholder */
 	}
 }
 
@@ -76,5 +76,7 @@ char *check_paths(char **pathArr, char *command)
 		}
 		free(cmpPath);
 	}
+	if (stat(command, &s) == 0)
+		return (command);
 	return (NULL);
 }
