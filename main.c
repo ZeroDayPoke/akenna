@@ -1,4 +1,9 @@
-#include "main.h"
+#include "shell.h"
+
+char **pathArr;
+int ret_val = 0;
+int hist = 0;
+char *pName;
 
 /**
  * main - Entry point for ghost
@@ -7,55 +12,54 @@
  * @envp: array of inherited environment vars
  * Return: TBD
  */
-int main(int argc, char *argv[], char *envp[])
+int main(int argc, char *argv[])
 {
-	pid_t child_pid;
-	int stat1, retVal;
-	ssize_t eRet = 0;
-	char *line = NULL, *moneySign, *thePath = NULL;
-	char **command, **pathArr;
-	char *pName = argv[0];
+	int retVal, tokenNum, i = 0;
+	char *line = NULL, *thePath = NULL, **command = NULL, *token = NULL, *holdstr = NULL;
 
-	moneySign = "$ ";
-	pathArr = path_locate(envp);
-	if (argc || argv[0] || moneySign)
-	{
-		/* placeholder */
-	}
+	pName = argv[0];
+	if (argc != 1)
+		exit(EXIT_FAILURE);
+	pathArr = path_locate("PATH");
 	while (1)
 	{
+		hist++;
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, moneySign, 2);
-		eRet = yoinkline(&line, stdin);
-		if (eRet == -1)
-		{
-			break;
-		}
+			write(STDOUT_FILENO, "$ ", 2);
+		if (yoinkline(&line, stdin) == -1)
+			continue;
+		/*
 		command = get_input(line);
+		*/
+		tokenNum = tok_num(line, " ");
+		command = malloc(sizeof(char *) * (tokenNum + 1));
+		holdstr = dupstr(line);
 		free(line);
-		retVal = runBuiltIn(envp, command, pathArr);
+		token = strtok(holdstr, " \t");
+		while (token)
+		{
+			command[i] = dupstr(token);
+			i++;
+			token = strtok(NULL, " ");
+		}
+		command[i] = NULL;
+		i = 0;
+		free(holdstr);
+		retVal = runBuiltIn(command);
 		if (retVal >= 0)
 		{
-			continue;
-		}
-		thePath = check_paths(pathArr, command[0]);
-		if (!(thePath))
-		{
-			errorHand(101, command[0], pName);
 			free_tokens(command);
 			continue;
 		}
-		child_pid = fork();
-		if (child_pid == 0)
-			execve(thePath, command, envp);
-		else
-			waitpid(child_pid, &stat1, WUNTRACED);
-		if (_strcmp(thePath, command[0]) != 0)
-			free(thePath);
-		free_tokens(command);
+		thePath = check_paths(command[0]);
+		if (!(thePath) || access((thePath), X_OK) != 0)
+		{
+			ret_val = 127;
+			errorHand(hist, command[0], pName);
+			free_tokens(command);
+			continue;
+		}
+		ret_val = forktime(command, thePath);
 	}
-	if (isatty(STDIN_FILENO))
-		write(STDOUT_FILENO, "\n", 1);
-	free_path(pathArr);
 	return (0);
 }

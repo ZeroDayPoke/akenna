@@ -1,45 +1,66 @@
-#include "main.h"
+#include "shell.h"
 
-void bIn_exit(char **envp, char **command, char **pathArr)
+int runBuiltIn(char **command);
+int hey_exit(char **command);
+int hey_env(char **command);
+
+/**
+ * runBuiltIn - function that runs built in commands
+ * @command: array of strings containing command and args
+ * Return: -1 if command isn't built in, else index num of built in
+ */
+int runBuiltIn(char **command)
 {
-	if (envp)
-		/*place holder*/
-	free_tokens(command);
-	free_path(pathArr);
-	exit(EXIT_SUCCESS);
-}
-
-void bIn_env(char **envp, char **command, char **pathArr)
-{
-	unsigned int i = 0;
-
-	if (pathArr)
-	/*placeholder*/
-	for (; envp[i]; i++)
+	builtIn_t betty[] = {
+		{ "exit", hey_exit },
+		{ "env", hey_env },
+		{ NULL, NULL }
+	};
+	int i;
+	for (i = 0; betty[i].fun; i++)
 	{
-		write(STDOUT_FILENO, envp[i], _strlen(envp[i]));
-		write(STDOUT_FILENO, "/n", 1);
+		if (_strcmp(betty[i].fun, command[0]) == 0 && _strlen(command[0]) == _strlen(betty[i].fun))
+		{
+			betty[i].f(command);
+			ret_val = 0;
+			return (i);
+		}
 	}
-	free_tokens(command);
+	return (-1);
 }
 
 /**
- * runBuiltIn - runs builtin comm
- * @envp: environ vars
- * Return: void
+ * hey_exit - built in exit for shell program
+ * @command: array of strings containing command and args
  */
-int runBuiltIn(char *envp[], char **command, char **pathArr)
+int hey_exit(char **command)
 {
-	builtIn_t betty[] = {{"exit", bIn_exit}, {"env", bIn_env}, {NULL, NULL}};
-	unsigned int i = 0;
+	free_tokens(command);
+	free_path(pathArr);
+	exit(ret_val);
+}
 
-	for (; betty[i].fun; i++)
-	{	
-		if (_strcmp(betty[i].fun, command[0]) == 0)
+/**
+ * hey_env - built in function to print local env
+ * @command: array of strings containing command and args
+ * Return: -1 on bad magic 0 otherwise
+ */
+int hey_env(char **command)
+{
+	int i, j;
+
+	if (!(environ))
+	{
+		return (-1);
+	}
+	for (i = 0; environ[i]; i++)
+	{
+		for (j = 0; environ[i][j]; j++)
 		{
-			betty[i].f(envp, command, pathArr);
-			return (i);
+			write(STDOUT_FILENO, &environ[i][j], 1);
 		}
-	}	
-	return (-1);
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	(void)command;
+	return (0);
 }

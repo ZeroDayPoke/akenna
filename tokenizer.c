@@ -1,4 +1,8 @@
-#include "main.h"
+#include "shell.h"
+
+int tok_num(char *str, char *delims);
+char **tokstr(char *line, char *delims);
+int substrLen(char *str, char *delims);
 
 /**
  * tok_num - calcs num of toks in str
@@ -13,7 +17,7 @@ int tok_num(char *str, char *delims)
 	lineLen = _strlen(str);
 	for (i = 0; i < lineLen; i++)
 	{
-		if (str[i] != *delims)
+		if (str[i] && str[i] != delims[0] && str[i] != delims[1])
 		{
 			tokTotal++;
 			i += substrLen(str + i, delims);
@@ -30,14 +34,13 @@ int tok_num(char *str, char *delims)
  */
 int substrLen(char *str, char *delims)
 {
-	int i = 0, tokLen = 0;
+	int i = 0;
 
-	while (str[i] && str[i] != *delims)
+	while (str[i] && str[i] != delims[0] && str[i] != delims[1])
 	{
 		i++;
-		tokLen++;
 	}
-	return (tokLen);
+	return (i);
 }
 
 /**
@@ -55,7 +58,7 @@ char **tokstr(char *line, char *delims)
 	tokenStorage = malloc(sizeof(char *) * (tokTotal + 1));
 	for (i = 0; i < tokTotal; i++)
 	{
-		while (line[j] == *delims)
+		while (line[j] == *delims || line[j] == delims[1])
 			j++;
 		ssLen = substrLen(line + j, delims);
 		tokenStorage[i] = malloc(sizeof(char) * (ssLen + 1));
