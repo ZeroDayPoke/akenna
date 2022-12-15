@@ -3,7 +3,7 @@
 void free_tokens(char **tokens);
 void free_path(char **paths);
 void free_env(void);
-void free_alias_list(alias_t *head);
+void sig_stop(int sNum);
 
 /**
  * free_tokens - frees mem assoc w indv strs in strarr
@@ -30,6 +30,10 @@ void free_path(char **paths)
 {
 	unsigned int i = 0;
 
+	if (!paths)
+		return;
+	if (!(*paths))
+		return;
 	paths[0] -= 5;
 	for (; paths[i] != NULL; i++)
 	{
@@ -51,19 +55,28 @@ void free_env(void)
 }
 
 /**
- * free_alias_list - Frees a alias_t linked list.
- * @head: The head of the alias_t list.
+ * free_exit - frees vars in prep for exit
+ * @line: input line
+ * Return: void
  */
-void free_alias_list(alias_t *head)
+void free_exit(char *line)
 {
-	alias_t *next;
+	free(line);
+	if (isatty(STDIN_FILENO))
+		write(STDOUT_FILENO, "\n", 1);
+	exit(ret_val);
+}
 
-	while (head)
-	{
-		next = head->next;
-		free(head->name);
-		free(head->value);
-		free(head);
-		head = next;
-	}
+/**
+ * sig_stop - stops signal
+ * @sNum: signal number
+ * Return: void
+ */
+void sig_stop(int sNum)
+{
+	char *sigMsg = "\nWhat is dead may never die...";
+
+	(void)sNum;
+	write(STDOUT_FILENO, sigMsg, _strlen(sigMsg));
+	write(STDOUT_FILENO, "\n$ ", 3);
 }

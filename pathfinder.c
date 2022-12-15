@@ -2,28 +2,34 @@
 
 char **path_locate(char *envvar);
 char **path_tok(char *path);
-void print_paths(char **pathArr);
 char *check_paths(char *command);
 
 /**
  * path_locate - yoinks path from env
- * @envvars: env var array in
+ * @envvar: env var array in
  * Return: array of path strs
  */
 char **path_locate(char *envvar)
 {
 	unsigned int i = 0;
-	char **daWay = NULL;
 
+	/* check that suitable environment exists */
+	if (!environ)
+		return (NULL);
+	if (!(*environ))
+		return (NULL);
+	if (!(**environ))
+		return (NULL);
+	/* search environmental vars for PATH */
 	for (; environ[i]; i++)
 	{
 		if (_strncmp(envvar, environ[i], _strlen(envvar)) == 0)
 		{
-			daWay = path_tok(environ[i]);
-			return (daWay);
+			pathArr = path_tok(environ[i]);
+			return (pathArr);
 		}
 	}
-	return (daWay);
+	return (pathArr);
 }
 
 /**
@@ -33,19 +39,18 @@ char **path_locate(char *envvar)
  */
 char **path_tok(char *path)
 {
-	char **thePaths;
 	char *separator = ":";
 
-	thePaths = tokstr(path, separator);
-	thePaths[0] += 5;
-	return (thePaths);
+	pathArr = tokstr(path, separator);
+	/* move pointer past PATH= component of str */
+	pathArr[0] += 5;
+	return (pathArr);
 }
 
 /**
  * check_paths - checks pathArr against command[0]
- * @pathArr: array of paths
  * @command: first tok of command array
- * Return: num of valid path located or NULL if none
+ * Return: composite path to command if one exists
  */
 char *check_paths(char *command)
 {
@@ -53,10 +58,15 @@ char *check_paths(char *command)
 	struct stat s;
 	char *cmpPath = NULL;
 
+	/* check if command supplied contained valid path */
 	if (stat(command, &s) == 0)
-	{
 		return (command);
-	}
+	/* create tokenized path array from env PATH var */
+	pathArr = path_locate("PATH=");
+	/* check that path array was populated */
+	if (!pathArr)
+		return (command);
+	/* cat path array w/ command supplied and check validity */
 	if (command[0] != '/' && command[0] != '.')
 	{
 		for (; pathArr[i]; i++)
@@ -68,10 +78,12 @@ char *check_paths(char *command)
 			_strcat(cmpPath, command);
 			if (stat(cmpPath, &s) == 0)
 			{
+				free_path(pathArr);
 				return (cmpPath);
 			}
 			free(cmpPath);
 		}
 	}
-	return (NULL);
+	free_path(pathArr);
+	return (command);
 }

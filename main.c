@@ -9,52 +9,39 @@ char *pName;
  * main - Entry point for ghost
  * @argc: arg count
  * @argv: array of input arg strings
- * @envp: array of inherited environment vars
  * Return: TBD
  */
 int main(int argc, char *argv[])
 {
-	int retVal, tokenNum, i = 0;
-	char *line = NULL, *thePath = NULL, **command = NULL, *token = NULL, *holdstr = NULL;
+	char *line = NULL, *thePath = NULL, **command = NULL;
+	size_t llen;
 
+	signal(SIGINT, sig_stop);
 	pName = argv[0];
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	pathArr = path_locate("PATH");
 	while (1)
 	{
 		hist++;
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 2);
-		if (yoinkline(&line, stdin) == -1)
+		if (getline(&line, &llen, stdin) < 0)
+			free_exit(line);
+		cleanstr(line);
+		if (tok_num(line, " ") <= 0)
+		{
 			continue;
-		/*
+		}
 		command = get_input(line);
-		*/
-		tokenNum = tok_num(line, " ");
-		command = malloc(sizeof(char *) * (tokenNum + 1));
-		holdstr = dupstr(line);
-		free(line);
-		token = strtok(holdstr, " \t");
-		while (token)
-		{
-			command[i] = dupstr(token);
-			i++;
-			token = strtok(NULL, " ");
-		}
-		command[i] = NULL;
-		i = 0;
-		free(holdstr);
-		retVal = runBuiltIn(command);
-		if (retVal >= 0)
-		{
-			free_tokens(command);
+		if (runBuiltIn(command, line) >= 0)
 			continue;
-		}
 		thePath = check_paths(command[0]);
-		if (!(thePath) || access((thePath), X_OK) != 0)
+		if (access(thePath, X_OK) != 0)
 		{
-			ret_val = 127;
+			if (access((thePath), F_OK) == 0)
+				ret_val = 126;
+			else
+				ret_val = 127;
 			errorHand(hist, command[0], pName);
 			free_tokens(command);
 			continue;

@@ -15,6 +15,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <signal.h>
 
 /* global */
 extern int hist;
@@ -26,7 +27,7 @@ extern char **environ;
 /**
  * struct builtIn_s - struct used to call builtIn funs
  * @fun: function name string
- * @f: void function pointer
+ * @f: int function pointer
  *
  * Description: calls builtIn funs
  */
@@ -35,21 +36,6 @@ typedef struct builtIn_s
 	char *fun;
 	int (*f)(char **param1);
 } builtIn_t;
-
-/**
- * struct alias_s - struct defining aliases.
- * @name: name of the alias.
- * @value: value of the alias.
- * @next: pointer to another struct alias_s.
- */
-typedef struct alias_s
-{
-	char *name;
-	char *value;
-	struct alias_s *next;
-} alias_t;
-
-alias_t *aliases;
 
 /*
  * prototypes - function protos below
@@ -71,18 +57,20 @@ int substrLen(char *str, char *delims);
 void free_tokens(char **tokens);
 void free_path(char **paths);
 void free_env(void);
-void free_alias_list(alias_t *head);
+void free_exit(char *line);
+void sig_stop(int sNum);
 
 /* defined in help_fun.c */
 char **get_input(char *input);
 ssize_t yoinkline(char **line, FILE *inbound);
-int num_len(int num);
+void *ampbuff(void *buff, int olds, int news);
 char *_itoa(int num);
 int forktime(char **command, char *thePath);
 
 /* defined in moar_strstuff.c */
 int _strncmp(char *s1, char *s2, int n);
 unsigned int _strspn(char *s, char *accept);
+int cleanstr(char *line);
 
 /* defined in pathfinder.c */
 char **path_locate(char *envvar);
@@ -91,23 +79,23 @@ char *check_paths(char *command);
 
 /* defined in error_elephant.c */
 void errorHand(int eNum, char *arg, char *pName);
+int num_len(int num);
 
 /* defined in built_in.c */
-int runBuiltIn(char **command);
+int runBuiltIn(char **command, char *line);
 int hey_exit(char **command);
 int hey_env(char **command);
 
 /* defined in main.c */
+int main(int argc, char *argv[]);
 
 /* defined in env_setenv_unsetenv_getenv.c */
-int hey_setenv(char **args, char **__attribute__((__unused__)), char __attribute__((__unused__)) **front);
 int hey_unsetenv(char **command, char **pathArr, char **envp);
 char **_getenv(char *var);
 
 /* defined in alias_builtins.c */
 int hey_alias(char **argArr, char __attribute__((__unused__)) **front);
 void set_alias(char *var_name, char *value);
-void print_alias(alias_t *alias);
 
 /* defined in error_cases.c */
 int create_error(char **argArr, int err);

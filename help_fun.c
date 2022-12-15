@@ -17,7 +17,6 @@ char **get_input(char *input)
 	char *separator = " \t";
 
 	command = tokstr(input, separator);
-	free(input);
 	return (command);
 }
 
@@ -82,34 +81,6 @@ ssize_t yoinkline(char **line, FILE *inbound)
 }
 
 /**
- * num_len - Counts the digit length of a number.
- * @num: The number to measure.
- * Return: The digit length.
- */
-int num_len(int num)
-{
-	unsigned int num1;
-	int len = 1;
-
-	if (num < 0)
-	{
-		len++;
-		num1 = num * -1;
-	}
-	else
-	{
-		num1 = num;
-	}
-	while (num1 > 9)
-	{
-		len++;
-		num1 /= 10;
-	}
-
-	return (len);
-}
-
-/**
  * _itoa - Converts an integer to a string.
  * @num: The integer.
  * Return: The converted string.
@@ -157,7 +128,7 @@ int forktime(char **command, char *thePath)
 	pid_t child_pid;
 	int stat1, exRet;
 
-	switch(child_pid = fork())
+	switch (child_pid = fork())
 	{
 		case 0:
 		{
